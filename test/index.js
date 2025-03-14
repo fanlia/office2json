@@ -1,16 +1,3 @@
-# office2json
-
-pptx, docx, xlsx to and from json
-
-## Getting started
-
-```sh
-npm i office2json
-```
-
-## Usage
-
-```javascript
 import { readFile, writeFile } from 'node:fs/promises'
 
 import { office2json, json2office } from '../index.js'
@@ -28,8 +15,3 @@ for (const file of files) {
 
   await writeFile(`output-${file}`, buffer)
 }
-```
-
-## Thanks
-
-[pptx2json](https://www.npmjs.com/package/pptx2json)
