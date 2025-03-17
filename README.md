@@ -13,7 +13,7 @@ npm i office2json
 ```javascript
 import { readFile, writeFile } from 'node:fs/promises'
 
-import { office2json, json2office } from '../index.js'
+import { office2json, json2office, template } from '../index.js'
 
 const files = ['test.docx', 'test.xlsx', 'test.pptx']
 
@@ -28,6 +28,40 @@ for (const file of files) {
 
   await writeFile(`output-${file}`, buffer)
 }
+
+const json = {
+  a: {
+    b: {
+      c: [
+        {
+          d: 'ok {{value1}}  ',
+        },
+      ],
+    },
+    e: '{{value1}} {{value2}}',
+  },
+}
+
+const result = template(json, {
+  value1: 'hello',
+  value2: 'world',
+})
+
+console.dir({ json, result }, { depth: null })
+//{
+//  json: {
+//    a: {
+//      b: { c: [ { d: 'ok {{value1}}   ' } ] },
+//      e: '{{value1}} {{value2}}'
+//    }
+//  },
+//  result: {
+//    a: {
+//      b: { c: [ { d: 'ok hello   ' } ] },
+//      e: 'hello world'
+//    }
+//  }
+//}
 ```
 
 ## Thanks

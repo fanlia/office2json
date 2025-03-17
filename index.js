@@ -56,3 +56,22 @@ export const json2office = async (json) => {
 
   return buffer
 }
+
+const RE = /\{\{(.*?)\}\}/g
+
+export const template = (json, data = {}) => {
+  const json_string = JSON.stringify(json, (key, value) => {
+    if (typeof value !== 'string' || !RE.test(value)) {
+      return value
+    }
+
+    const new_value = value.replace(RE, (m, d) => {
+      const part = data[d] || d
+      return part
+    })
+
+    return new_value
+  })
+  const new_json = JSON.parse(json_string)
+  return new_json
+}
