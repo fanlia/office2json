@@ -2,7 +2,7 @@ import { office2json, json2office, template } from './lib/index.js'
 
 export { office2json, json2office, template }
 
-const _readFile = async (file) =>
+const _readFile = async (file, action) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
 
@@ -10,7 +10,7 @@ const _readFile = async (file) =>
 
     reader.onerror = reject
 
-    reader.readAsArrayBuffer(file)
+    reader[action](file)
   })
 
 const _writeFile = async (name, blob) => {
@@ -38,11 +38,16 @@ const base642blob = async (base64, name) => {
 }
 
 export const readFile = async (file) => {
-  const from = await _readFile(file)
+  const from = await _readFile(file, 'readAsArrayBuffer')
 
   const json = await office2json(from)
 
   return json
+}
+
+export const readFileAsDataURL = async (file) => {
+  const from = await _readFile(file, 'readAsDataURL')
+  return from
 }
 
 export const writeFile = async (name, json) => {
