@@ -66,7 +66,7 @@
 
         $images.innerHTML = Object.entries(json)
           .filter(([key]) => key.includes('media/image'))
-          .sort((a, b) => (a[0] > b[0] ? 1 : -1))
+          .sort((a, b) => a[0].match(/\d+/) - b[0].match(/\d+/))
           .map(
             ([key, value]) => `
           <li>
@@ -96,6 +96,13 @@
         await writeFile(filename, new_json)
       }
 
+      $images.onclick = async (e) => {
+        if (e.target.tagName.toLowerCase() !== 'img') {
+          return
+        }
+        const img = e.target
+        img.style.width = img.style.width === '100px' ? '100%' : '100px'
+      }
       $images.onchange = async (e) => {
         if (e.target.tagName.toLowerCase() !== 'input') {
           return
