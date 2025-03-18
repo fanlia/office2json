@@ -6,7 +6,7 @@
   "main": "index.js",
   "browser": "index.browser.js",
   "scripts": {
-    "build": "vite build --minify false --outDir docs",
+    "build": "vite build --minify false --base /office2json --outDir docs",
     "start": "vite"
   },
   "keywords": [],
