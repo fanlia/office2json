@@ -1,5 +1,5 @@
 if (process.argv.length < 3) {
-  console.log('node ./from-json.js ./xxx.json ./yyy.json')
+  console.log('node ./compare-json.js ./xxx.json ./yyy.json')
   process.exit()
 }
 const from_path = process.argv[2]
