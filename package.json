@@ -4,6 +4,7 @@
   "type": "module",
   "description": "pptx, docx, xlsx to and from json",
   "main": "index.js",
+  "browser": "index.browser.js",
   "scripts": {
     "start": "vite"
   },
