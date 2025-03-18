@@ -8,7 +8,7 @@
   <body>
     <h2>office template</h2>
     <div style="display: flex">
-      <div style="max-width: 50%">
+      <div style="max-width: 50%; overflow: scroll; margin-right: 1em">
         <input type="file" name="office" accept=".docx,.pptx,.xlsx" />
         <pre></pre>
       </div>
@@ -46,17 +46,19 @@
         filename = 'output-' + file.name
         const json = await readFile(file)
         $pre.textContent = JSON.stringify(json, null, 2)
-        $images.innerHTML = json['[Content_Types].xml']?.['Types']?.['Override']
-          ?.filter((d) => d['@ContentType'].startsWith('image/'))
+
+        $images.innerHTML = Object.entries(json)
+          .filter(([key]) => key.includes('media/image'))
+          .sort((a, b) => (a[0] > b[0] ? 1 : -1))
           .map(
-            (d) => `
+            ([key, value]) => `
           <li>
-            <h3>${d['@PartName']}</h3>
+            <h3>${key}</h3>
             <div style="display: flex;">
-              <img src="${json[d['@PartName'].slice(1)]}" style="width:100px;height:auto;margin-right:1em;" />
+              <img src="${value}" style="width:100px;height:auto;margin-right:1em;" />
 
               <div>
-                <input type="file" name="image_input" data-file-name="${d['@PartName'].slice(1)}" accept=".gif,.jpg,.png" />
+                <input type="file" name="image_input" data-file-name="${key}" accept=".gif,.jpg,.png" />
                 <img style="display:none;width:100px;height:auto;" />
               </div>
           </li>
