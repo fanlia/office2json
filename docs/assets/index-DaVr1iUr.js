@@ -15564,13 +15564,13 @@ function requireXmlbuilder2_min() {
   return xmlbuilder2_min$1.exports;
 }
 var xmlbuilder2_minExports = requireXmlbuilder2_min();
-class Parser {
+class XMLParser {
   async parse(xml) {
     const json = xmlbuilder2_minExports.convert(xml, { format: "object" });
     return json;
   }
 }
-class Builder {
+class XMLBuilder {
   async build(json) {
     const doc = xmlbuilder2_minExports.create({ encoding: "UTF-8" }, json);
     const xml = doc.end();
@@ -19057,7 +19057,7 @@ const office2json = async (buffer) => {
       let content;
       if (filepath.endsWith(".xml") || filepath.endsWith(".rels")) {
         const xml = await file.async("string");
-        const parser = new Parser();
+        const parser = new XMLParser();
         content = await parser.parse(xml);
       } else {
         const base64 = await file.async("base64");
@@ -19073,7 +19073,7 @@ const json2office = async (json) => {
   await Promise.all(
     Object.entries(json).map(async ([filepath, content]) => {
       if (filepath.endsWith(".xml") || filepath.endsWith(".rels")) {
-        const builder = new Builder();
+        const builder = new XMLBuilder();
         const xml = await builder.build(content);
         zip.file(filepath, xml);
       } else {
