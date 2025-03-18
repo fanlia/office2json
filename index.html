@@ -28,13 +28,32 @@
           <pre></pre>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; padding: 1em">
-        <button name="writeFile">writeFile</button>
-        <textarea rows="3">
-{
-  "world": "世界"
-}
-        </textarea>
+      <div
+        style="display: flex; flex-direction: column; padding: 1em; width: 50%"
+      >
+        <div>
+          <button name="writeFile">writeFile</button>
+        </div>
+
+        <h3
+          style="
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5em;
+            width: 100%;
+          "
+        >
+          text
+        </h3>
+        <ol name="texts"></ol>
+        <h3
+          style="
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5em;
+            width: 100%;
+          "
+        >
+          image
+        </h3>
         <ol name="images"></ol>
       </div>
     </div>
@@ -49,7 +68,7 @@
       const $pre = document.querySelector('pre')
       const $input = document.querySelector('input[name=office]')
       const $button = document.querySelector('button[name=writeFile]')
-      const $textarea = document.querySelector('textarea')
+      const $texts = document.querySelector('ol[name=texts]')
       const $images = document.querySelector('ol[name=images]')
       const $copy = document.querySelector('button[name=copy]')
 
@@ -63,6 +82,17 @@
         filename = 'output-' + file.name
         const json = await readFile(file)
         $pre.textContent = JSON.stringify(json, null, 2)
+
+        $texts.innerHTML = ($pre.textContent.match(/\{\{(.*?)\}\}/g) || [])
+          .map((d) => d.slice(2, -2))
+          .map(
+            (d) => `
+        <li>
+          <label><span style="margin-right:1em;">${d}</span><input type="text" data-key="${d}" /></label>
+        </li>
+        `,
+          )
+          .join('')
 
         $images.innerHTML = Object.entries(json)
           .filter(([key]) => key.includes('media/image'))
@@ -92,8 +122,21 @@
           return
         }
 
+        const data = Array.from(
+          $texts.querySelectorAll('input[type=text]'),
+        ).reduce((m, $d) => {
+          const key = $d.dataset.key
+          const value = $d.value.trim()
+          if (!value) {
+            return
+          }
+          return {
+            ...m,
+            [key]: value,
+          }
+        }, {})
+
         const json = JSON.parse($pre.textContent)
-        const data = JSON.parse($textarea.textContent)
         const new_json = template(json, data)
         await writeFile(filename, new_json)
       }
