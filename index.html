@@ -9,7 +9,7 @@
     <h2>office template</h2>
     <div style="display: flex">
       <div style="max-width: 50%">
-        <input type="file" accept=".docx,.pptx,.xlsx" />
+        <input type="file" name="office" accept=".docx,.pptx,.xlsx" />
         <pre></pre>
       </div>
       <div style="display: flex; flex-direction: column">
@@ -19,15 +19,22 @@
   "world": "世界"
 }
         </textarea>
+        <ol name="images"></ol>
       </div>
     </div>
     <script type="module">
-      import { readFile, writeFile, template } from './index.browser.js'
+      import {
+        readFile,
+        writeFile,
+        template,
+        readFileAsDataURL,
+      } from './index.browser.js'
 
       const $pre = document.querySelector('pre')
-      const $input = document.querySelector('input')
+      const $input = document.querySelector('input[name=office]')
       const $button = document.querySelector('button')
       const $textarea = document.querySelector('textarea')
+      const $images = document.querySelector('ol[name=images]')
 
       let filename
 
@@ -39,16 +46,54 @@
         filename = 'output-' + file.name
         const json = await readFile(file)
         $pre.textContent = JSON.stringify(json, null, 2)
+        $images.innerHTML = json['[Content_Types].xml']?.['Types']?.['Override']
+          ?.filter((d) => d['@ContentType'].startsWith('image/'))
+          .map(
+            (d) => `
+          <li>
+            <h3>${d['@PartName']}</h3>
+            <div style="display: flex;">
+              <img src="${json[d['@PartName'].slice(1)]}" style="width:100px;height:auto;margin-right:1em;" />
+
+              <div>
+                <input type="file" name="image_input" data-file-name="${d['@PartName'].slice(1)}" accept=".gif,.jpg,.png" />
+                <img style="display:none;width:100px;height:auto;" />
+              </div>
+          </li>
+          `,
+          )
+          .join('')
       }
 
       $button.onclick = async () => {
         if (!filename) {
           return
         }
+
         const json = JSON.parse($pre.textContent)
         const data = JSON.parse($textarea.textContent)
         const new_json = template(json, data)
         await writeFile(filename, new_json)
+      }
+      $images.onchange = async (e) => {
+        if (e.target.tagName.toLowerCase() !== 'input') {
+          return
+        }
+        const d = e.target
+        const file = d.files[0]
+        if (!file) {
+          return
+        }
+        const dataurl = await readFileAsDataURL(file)
+        d.nextElementSibling.style.display = ''
+        d.nextElementSibling.src = dataurl
+        const fileName = d.dataset.fileName
+
+        const pattern = new RegExp(`"${fileName}": "data:.*?;base64,.*?"`)
+        $pre.textContent = $pre.textContent.replace(
+          pattern,
+          `"${fileName}": "${dataurl}"`,
+        )
       }
     </script>
   </body>
