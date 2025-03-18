@@ -6,21 +6,24 @@
     <title></title>
   </head>
   <body>
-    <div>
+    <h2>office template</h2>
+    <div style="display: flex">
       <div>
         <input type="file" />
-      </div>
-      <div>
-        <button>writeFile</button>
         <pre></pre>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <button>writeFile</button>
+        <textarea>{ "world": "世界" }</textarea>
       </div>
     </div>
     <script type="module">
-      import { readFile, writeFile } from './index.browser.js'
+      import { readFile, writeFile, template } from './index.browser.js'
 
       const $pre = document.querySelector('pre')
       const $input = document.querySelector('input')
       const $button = document.querySelector('button')
+      const $textarea = document.querySelector('textarea')
 
       let filename
 
@@ -39,7 +42,9 @@
           return
         }
         const json = JSON.parse($pre.textContent)
-        await writeFile(filename, json)
+        const data = JSON.parse($textarea.textContent)
+        const new_json = template(json, data)
+        await writeFile(filename, new_json)
       }
     </script>
   </body>
