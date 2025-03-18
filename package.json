@@ -6,7 +6,7 @@
   "main": "index.js",
   "browser": "index.browser.js",
   "scripts": {
-    "build": "vite build --minify false --base ./ --outDir docs",
+    "build": "vite build --minify false --base ./ --outDir docs --emptyOutDir",
     "start": "vite"
   },
   "keywords": [],
