@@ -32,3 +32,4 @@ for (const file of files) {
 ## Thanks
 
 [pptx2json](https://www.npmjs.com/package/pptx2json)
+[pptxgen](https://github.com/gitbrent/PptxGenJS)
