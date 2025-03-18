@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+  </head>
+  <body>
+    <div>
+      <div>
+        <input type="file" />
+      </div>
+      <div>
+        <button>writeFile</button>
+        <pre></pre>
+      </div>
+    </div>
+    <script type="module">
+      import { readFile, writeFile } from './index.browser.js'
+
+      const $pre = document.querySelector('pre')
+      const $input = document.querySelector('input')
+      const $button = document.querySelector('button')
+
+      let filename
+
+      $input.onchange = async () => {
+        const file = $input.files[0]
+        if (!file) {
+          return
+        }
+        filename = 'output-' + file.name
+        const json = await readFile(file)
+        $pre.textContent = JSON.stringify(json, null, 2)
+      }
+
+      $button.onclick = async () => {
+        if (!filename) {
+          return
+        }
+        const json = JSON.parse($pre.textContent)
+        await writeFile(filename, json)
+      }
+    </script>
+  </body>
+</html>

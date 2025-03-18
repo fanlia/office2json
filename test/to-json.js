@@ -8,13 +8,11 @@ import { basename } from 'node:path'
 const from_path = process.argv[2]
 const to_path = 'output-' + basename(from_path) + '.json'
 
-import { readFile, writeFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 
-import { office2json } from '../index.js'
+import { readFile } from '../index.js'
 
-const from = await readFile(from_path)
-
-const json = await office2json(from)
+const json = await readFile(from_path)
 
 await writeFile(to_path, JSON.stringify(json, null, 2))
 

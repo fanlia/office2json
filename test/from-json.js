@@ -8,14 +8,8 @@ const to_path = 'output-' + process.argv[3]
 
 const { default: json } = await import(from_path, { with: { type: 'json' } })
 
-import { writeFile } from 'node:fs/promises'
+import { writeFile } from '../index.js'
 
-import { json2office } from '../index.js'
-
-const to = await json2office(json)
-
-const buffer = Buffer.from(to, 'base64')
-
-await writeFile(to_path, buffer)
+await writeFile(to_path, json)
 
 console.log('writed to file', to_path)

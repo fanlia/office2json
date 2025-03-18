@@ -5,7 +5,7 @@
   "description": "pptx, docx, xlsx to and from json",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "vite"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,8 @@
     "fast-json-patch": "^3.1.1",
     "jszip": "^3.10.1",
     "xmlbuilder2": "^3.1.1"
+  },
+  "devDependencies": {
+    "vite": "^6.2.2"
   }
 }
