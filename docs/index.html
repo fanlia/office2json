@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>office template</title>
+    <script type="module" crossorigin src="/assets/index-DatslPzc.js"></script>
+  </head>
+  <body>
+    <h2 style="padding: 1em">office template</h2>
+    <div style="display: flex; border-top: 1px solid #eee">
+      <div
+        style="
+          width: 50%;
+          overflow: scroll;
+          border-right: 1px solid #eee;
+          padding: 1em;
+        "
+      >
+        <input type="file" name="office" accept=".docx,.pptx,.xlsx" />
+        <div style="position: relative">
+          <button
+            name="copy"
+            style="position: absolute; right: 1em; display: none"
+          >
+            copy
+          </button>
+          <pre></pre>
+        </div>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          padding-top: 1em;
+          padding-bottom: 1em;
+          width: 50%;
+        "
+      >
+        <div style="padding-left: 1em">
+          <button name="writeFile">writeFile</button>
+        </div>
+
+        <h3
+          style="
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5em;
+            padding-left: 1em;
+            width: 100%;
+          "
+        >
+          text
+        </h3>
+        <ol name="texts"></ol>
+        <h3
+          style="
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5em;
+            padding-left: 1em;
+            width: 100%;
+          "
+        >
+          image
+        </h3>
+        <ol name="images"></ol>
+      </div>
+    </div>
+  </body>
+</html>
