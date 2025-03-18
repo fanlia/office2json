@@ -1,6 +1,6 @@
 {
   "name": "office2json",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "pptx, docx, xlsx to and from json",
   "main": "index.js",
