@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jszip": "^3.10.1",
+    "fflate": "^0.8.2",
     "mime": "^4.0.6",
     "xmlbuilder2": "^3.1.1"
   },

@@ -14,8 +14,8 @@ export { office2json, json2office, template }
 
 export const readFile = async (file) => {
   const from = await _readFile(file)
-
-  const json = await office2json(from)
+  const u8 = new Uint8Array(from)
+  const json = await office2json(u8)
 
   return json
 }
