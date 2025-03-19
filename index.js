@@ -7,10 +7,12 @@ import {
   office2json,
   json2office,
   template,
+  xml2json,
+  json2xml,
   base642dataurl,
 } from './lib/index.js'
 
-export { office2json, json2office, template }
+export { office2json, json2office, template, xml2json, json2xml }
 
 export const readFile = async (file) => {
   const from = await _readFile(file)

@@ -1,6 +1,12 @@
-import { office2json, json2office, template } from './lib/index.js'
+import {
+  office2json,
+  json2office,
+  template,
+  json2xml,
+  xml2json,
+} from './lib/index.js'
 
-export { office2json, json2office, template }
+export { office2json, json2office, template, json2xml, xml2json }
 
 const _readFile = async (file, action) =>
   new Promise((resolve, reject) => {
