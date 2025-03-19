@@ -25,8 +25,8 @@ const _writeFile = async (name, blob) => {
   }, 100)
 }
 
-const base642blob = async (base64, name) => {
-  const contentType = name.endsWith('.docx')
+const u82blob = async (u8, name) => {
+  const type = name.endsWith('.docx')
     ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     : name.endsWith('.pptx')
       ? 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
@@ -34,7 +34,7 @@ const base642blob = async (base64, name) => {
         ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         : 'application/zip'
 
-  return fetch(`data:${contentType};base64,${base64}`).then((res) => res.blob())
+  return new Blob([u8], { type })
 }
 
 export const readFile = async (file) => {
@@ -53,7 +53,7 @@ export const readFileAsDataURL = async (file) => {
 export const writeFile = async (name, json) => {
   const to = await json2office(json)
 
-  const blob = await base642blob(to, name)
+  const blob = await u82blob(to, name)
 
   await _writeFile(name, blob)
 }
