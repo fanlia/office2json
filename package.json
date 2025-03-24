@@ -13,9 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@xmldom/xmldom": "^0.9.8",
     "fflate": "^0.8.2",
-    "mime": "^4.0.6",
-    "xmlbuilder2": "^3.1.1"
+    "mime": "^4.0.6"
   },
   "devDependencies": {
     "fast-json-patch": "^3.1.1",
