@@ -1,3 +1,5 @@
+import mime from 'mime'
+
 import {
   office2json,
   json2office,
@@ -32,13 +34,7 @@ const _writeFile = async (name, blob) => {
 }
 
 const u82blob = async (u8, name) => {
-  const type = name.endsWith('.docx')
-    ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    : name.endsWith('.pptx')
-      ? 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-      : name.endsWith('xlsx')
-        ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        : 'application/zip'
+  const type = mime.getType(name)
 
   return new Blob([u8], { type })
 }
