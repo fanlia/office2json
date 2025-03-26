@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>office template</title>
-    <script type="module" crossorigin src="./assets/index-B6xyVZSM.js"></script>
+    <script type="module" crossorigin src="./assets/index-CIIpUIf4.js"></script>
   </head>
   <body>
     <h2 style="padding: 1em">office template</h2>
@@ -19,13 +19,15 @@
       >
         <input type="file" name="office" accept=".docx,.pptx,.xlsx" />
         <div style="position: relative">
-          <button
-            name="copy"
+          <div
+            name="tool"
             style="position: absolute; right: 1em; display: none"
           >
-            copy
-          </button>
-          <pre></pre>
+            <button name="switch" data-type="text">text/json</button>
+            <button name="copy">copy</button>
+          </div>
+          <pre name="extract"></pre>
+          <pre name="json" style="display: none"></pre>
         </div>
       </div>
       <div
