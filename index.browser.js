@@ -6,9 +6,10 @@ import {
   template,
   json2xml,
   xml2json,
+  extract,
 } from './lib/index.js'
 
-export { office2json, json2office, template, json2xml, xml2json }
+export { office2json, json2office, template, json2xml, xml2json, extract }
 
 const _readFile = async (file, action) =>
   new Promise((resolve, reject) => {

@@ -18,13 +18,15 @@
       >
         <input type="file" name="office" accept=".docx,.pptx,.xlsx" />
         <div style="position: relative">
-          <button
-            name="copy"
+          <div
+            name="tool"
             style="position: absolute; right: 1em; display: none"
           >
-            copy
-          </button>
-          <pre></pre>
+            <button name="switch" data-type="text">text/json</button>
+            <button name="copy">copy</button>
+          </div>
+          <pre name="extract"></pre>
+          <pre name="json" style="display: none"></pre>
         </div>
       </div>
       <div
@@ -70,14 +72,30 @@
         writeFile,
         template,
         readFileAsDataURL,
+        extract,
       } from './index.browser.js'
 
-      const $pre = document.querySelector('pre')
+      const $pre_extract = document.querySelector('pre[name=extract]')
+      const $pre = document.querySelector('pre[name=json]')
       const $input = document.querySelector('input[name=office]')
       const $button = document.querySelector('button[name=writeFile]')
       const $texts = document.querySelector('ol[name=texts]')
       const $images = document.querySelector('ol[name=images]')
       const $copy = document.querySelector('button[name=copy]')
+      const $switch = document.querySelector('button[name=switch]')
+      const $tool = document.querySelector('div[name=tool]')
+
+      $switch.onclick = () => {
+        if ($switch.dataset.type === 'text') {
+          $pre_extract.style.display = 'none'
+          $pre.style.display = ''
+          $switch.dataset.type = 'json'
+        } else {
+          $pre_extract.style.display = ''
+          $pre.style.display = 'none'
+          $switch.dataset.type = 'text'
+        }
+      }
 
       let filename
 
@@ -88,6 +106,11 @@
         }
         filename = 'output-' + file.name
         const json = await readFile(file)
+        const extract_json = extract(json, file.name)
+        const delimiter = file.name.endsWith('.xlsx') ? ' ' : ''
+        $pre_extract.textContent = extract_json
+          ?.map((d) => d.join(delimiter))
+          .join('\n')
         $pre.textContent = JSON.stringify(json, null, 2)
 
         $texts.innerHTML = ($pre.textContent.match(/\{\{(.*?)\}\}/g) || [])
@@ -121,7 +144,7 @@
           `,
           )
           .join('')
-        $copy.style.display = ''
+        $tool.style.display = ''
       }
 
       $button.onclick = async () => {
@@ -178,7 +201,8 @@
 
       $copy.onclick = async (e) => {
         try {
-          await navigator.clipboard.writeText($pre.textContent)
+          const $target = $switch.dataset.type === 'json' ? $pre : $pre_extract
+          await navigator.clipboard.writeText($target.textContent)
           $copy.textContent = 'copied'
           setTimeout(() => {
             $copy.textContent = 'copy'

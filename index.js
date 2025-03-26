@@ -9,10 +9,11 @@ import {
   template,
   xml2json,
   json2xml,
+  extract,
   base642dataurl,
 } from './lib/index.js'
 
-export { office2json, json2office, template, xml2json, json2xml }
+export { office2json, json2office, template, xml2json, json2xml, extract }
 
 export const readFile = async (file) => {
   const from = await _readFile(file)
