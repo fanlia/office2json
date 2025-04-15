@@ -67,6 +67,7 @@
       </div>
     </div>
     <script type="module">
+      import jsonview from '@pgrabovets/json-view'
       import {
         readFile,
         writeFile,
@@ -98,6 +99,16 @@
       }
 
       let filename
+      let tree = null
+
+      const renderJSON = () => {
+        if (tree) {
+          jsonview.destroy(tree)
+        }
+        const data = JSON.parse($pre._textContent)
+        tree = jsonview.renderJSON(data, $pre)
+        jsonview.expand(tree)
+      }
 
       $input.onchange = async () => {
         const file = $input.files[0]
@@ -111,9 +122,10 @@
         $pre_extract.textContent = extract_json
           ?.map((d) => d.join(delimiter))
           .join('\n')
-        $pre.textContent = JSON.stringify(json, null, 2)
+        $pre._textContent = JSON.stringify(json, null, 2)
+        renderJSON()
 
-        $texts.innerHTML = ($pre.textContent.match(/\{\{(.*?)\}\}/g) || [])
+        $texts.innerHTML = ($pre._textContent.match(/\{\{(.*?)\}\}/g) || [])
           .map((d) => d.slice(2, -2))
           .map(
             (d) => `
@@ -166,7 +178,7 @@
           }
         }, {})
 
-        const json = JSON.parse($pre.textContent)
+        const json = JSON.parse($pre._textContent)
         const new_json = template(json, data)
         await writeFile(filename, new_json)
       }
@@ -193,10 +205,11 @@
         const fileName = d.dataset.fileName
 
         const pattern = new RegExp(`"${fileName}": "data:.*?;base64,.*?"`)
-        $pre.textContent = $pre.textContent.replace(
+        $pre._textContent = $pre._textContent.replace(
           pattern,
           `"${fileName}": "${dataurl}"`,
         )
+        renderJSON()
       }
 
       $copy.onclick = async (e) => {
